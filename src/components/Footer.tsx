@@ -21,7 +21,7 @@ export default function Footer() {
 	const minutes = date.getMinutes().toString().padStart(2, '0');
 
 	return (
-		<div className="items-center bottom-0 bg-black py-6 w-full">
+		<div className="fixed items-center bottom-0 bg-black py-6 w-full">
 			<Container>
 				<div className="grid grid-cols-3">
 					<div className="flex items-center">
@@ -34,7 +34,7 @@ export default function Footer() {
 						{isMuted ? (
 							<FaMicrophoneSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
+								className="flex text-white rounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsMuted(!isMuted)}
 							/>
 						) : (
@@ -48,7 +48,7 @@ export default function Footer() {
 						{isCameraOff ? (
 							<FaVideoSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
+								className="flex text-white rounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsCameraOff(!isCameraOff)}
 							/>
 						) : (
@@ -62,7 +62,7 @@ export default function Footer() {
 						{isScreenSharing ? (
 							<FaEyeSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
+								className="flex text-white rounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsScreenSharing(!isScreenSharing)}
 							/>
 						) : (
@@ -76,7 +76,7 @@ export default function Footer() {
 						{isCallEnded ? (
 							<FaPhoneSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
+								className="flex text-whiterounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsCallEnded(!isCallEnded)}
 							/>
 						) : (

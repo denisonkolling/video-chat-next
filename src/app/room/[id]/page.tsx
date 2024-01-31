@@ -11,19 +11,19 @@ export default function Room({ params }: { params: { id: string } }) {
           <div className="grid md:grid-cols-2 grid-cols-1 gap-8">
             <div className="bg-gray-950 w-full rounded-md h-full p-1 relative ">
               <video className="h-full w-full"></video>
-              <span className="absolute bottom-3 mx-4">Username</span>
+              <span className="absolute bottom-3 mx-4 text-white">Username</span>
             </div>
             <div className="bg-gray-950 w-full rounded-md h-full p-1 relative ">
               <video className="h-full w-full"></video>
-              <span className="absolute bottom-3 mx-4">Username</span>
+              <span className="absolute bottom-3 mx-4 text-white">Username</span>
             </div>
             <div className="bg-gray-950 w-full rounded-md h-full p-1 relative ">
               <video className="h-full w-full"></video>
-              <span className="absolute bottom-3 mx-4">Username</span>
+              <span className="absolute bottom-3 mx-4 text-white">Username</span>
             </div>
             <div className="bg-gray-950 w-full rounded-md h-full p-1 relative ">
               <video className="h-full w-full"></video>
-              <span className="absolute bottom-3 mx-4">Username</span>
+              <span className="absolute bottom-3 mx-4 text-white">Username</span>
             </div>
           </div>
         </div>

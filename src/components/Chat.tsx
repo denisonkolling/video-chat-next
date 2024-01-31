@@ -2,7 +2,7 @@ import { IoSend } from "react-icons/io5";
 
 export default function Chat() {
   return (
-    <div className="bg-gray-900 p-4 pt-4 md:w-[20%] hidden md:flex rounded-md m-3 h-[95%]">
+    <div className="bg-gray-900 p-4 pt-4 md:w-[20%] hidden md:flex rounded-md m-3 h-[88%]">
       <div className="relative h-full w-full">
         <div className="bg-gray-950 rounded p-2">
           <div className="flex items-center text-pink-400 space-x-2">
