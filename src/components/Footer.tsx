@@ -34,13 +34,13 @@ export default function Footer() {
 						{isMuted ? (
 							<FaMicrophoneSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer"
+								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsMuted(!isMuted)}
 							/>
 						) : (
 							<FaMicrophone
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer"
+								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer hover:bg-red-500"
 								onClick={() => setIsMuted(!isMuted)}
 							/>
 						)}
@@ -48,13 +48,13 @@ export default function Footer() {
 						{isCameraOff ? (
 							<FaVideoSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer"
+								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsCameraOff(!isCameraOff)}
 							/>
 						) : (
 							<FaVideo
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer"
+								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer hover:bg-red-500"
 								onClick={() => setIsCameraOff(!isCameraOff)}
 							/>
 						)}
@@ -62,13 +62,13 @@ export default function Footer() {
 						{isScreenSharing ? (
 							<FaEyeSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer"
+								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsScreenSharing(!isScreenSharing)}
 							/>
 						) : (
 							<FaDisplay
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer"
+								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer hover:bg-red-500"
 								onClick={() => setIsScreenSharing(!isScreenSharing)}
 							/>
 						)}
@@ -76,7 +76,7 @@ export default function Footer() {
 						{isCallEnded ? (
 							<FaPhoneSlash
 								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer"
+								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer bg-red-500"
 								onClick={() => setIsCallEnded(!isCallEnded)}
 							/>
 						) : (
