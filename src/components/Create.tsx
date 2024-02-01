@@ -1,10 +1,11 @@
+'use client'
 import { useRef } from 'react';
 import Button from './Button';
 import { Input } from './Input';
 
-export default function CreateRoom() {
+export function CreateRoom() {
 
-  const name = useRef(null);
+  const name = useRef<HTMLInputElement>(null);
 
   return (
     <>
