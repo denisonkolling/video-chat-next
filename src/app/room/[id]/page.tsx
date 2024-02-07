@@ -11,7 +11,7 @@ export default function Room({ params }: { params: { id: string } }) {
   const { socket } = useContext(SocketContext);
 
   useEffect(()=>{
-    socket?.on('connection', ()=> {
+    socket?.on('connect', ()=> {
       console.log('conectado')
       socket?.emit('subscribe', {
         roomId: params.id,
@@ -44,7 +44,7 @@ export default function Room({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-				<Chat />
+				<Chat roomId={params.id}/>
 			</div>
 			<Footer />
 		</div>
