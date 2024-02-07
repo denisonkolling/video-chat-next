@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { CreateRoom } from './Create';
 import JoinRoom from './Join';
+import CreateRoom from './Create';
 
 export default function FormWrapper() {
 	const [selectedRoom, setSelectedRoom] = useState<'create' | 'join'>('join');
