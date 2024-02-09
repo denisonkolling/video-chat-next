@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Aplicação de Vídeo Chamada com WebSocket 👥💬
 
-## Getting Started
+## Visão Geral 🌐
 
-First, run the development server:
+Este projeto gira em torno da implementação de WebSockets, criando uma aplicação de vídeo chamada web. A aplicação utiliza comunicação assíncrona em tempo real para fornecer aos usuários uma interface de chat dinâmica e interativa.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Recursos 🚀
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Mensagens em tempo real**: Experimente a entrega instantânea de mensagens por meio de WebSockets.
+- **Interface amigável**: Desfrute de um ambiente de chat dinâmico e interativo.
+- **Comunicação assíncrona**: Permita uma comunicação perfeita entre os usuários.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tecnologias Utilizadas 💻
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Next.js**: O ambiente de execução do lado do servidor.
+- **Socket.io**: Uma biblioteca para aplicações web em tempo real usando WebSockets.
+- **HTML/CSS/JavaScript**: Tecnologias de desenvolvimento front-end para criar a interface do usuário.
 
-## Learn More
+## Uso 🎉
+1. **Digite seu nome de usuário:** Forneça um nome de usuário único para entrar no chat.
+2. **Comece a conversar:** Comece a enviar e receber mensagens em tempo real.
+3. **Aproveite a experiência:** Explore os recursos dinâmicos e interativos da aplicação de chat.
 
-To learn more about Next.js, take a look at the following resources:
+## Licença 📄
+Este projeto está licenciado sob a [Licença MIT](LICENSE.md).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Agradecimentos 🙏
+Agradecimentos especiais aos desenvolvedores da [HeroCodeBr](https://herocode.com.br/hero-pro/) por disponibilizrem curso para aprendizado de utilização e aplicação do Socket.io, uma biblioteca robusta de comunicação em tempo real.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Sinta-se à vontade para explorar, contribuir e aprimorar a funcionalidade desta Aplicação de Chat com WebSocket! Se tiver alguma dúvida ou problema, abra uma [issue](https://github.com/banksdaniel/websocket-chat-app/issues).

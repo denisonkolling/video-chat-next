@@ -19,6 +19,10 @@ export default function Room({ params }: { params: { id: string } }) {
 			});
 			await initCamera();
 		});
+
+    socket?.on('new user', (data)=>{
+      console.log('New usser connected ' + data);
+    })
 	}, [socket]);
 
 	const initCamera = async () => {
@@ -39,7 +43,7 @@ export default function Room({ params }: { params: { id: string } }) {
 				<div className="md:w-[85%] w-full m-3 ">
 					<div className="grid md:grid-cols-2 grid-cols-1 gap-8">
 						<div className="bg-gray-950 w-full rounded-md h-full p-1 relative ">
-							<video className="h-full w-full" ref={localStream} autoPlay playsInline />
+							<video className="h-full w-full mirror-mode" ref={localStream} autoPlay playsInline />
 							<span className="absolute bottom-3 mx-4 text-white">
 								Username
 							</span>
