@@ -9,10 +9,10 @@ import { useContext, useEffect, useRef } from 'react';
 export default function Room({ params }: { params: { id: string } }) {
 	const { socket } = useContext(SocketContext);
   const localStream = useRef<HTMLVideoElement>(null);
+	const peerConnection = useRef<Record<string, RTCPeerConnection>>({});
 
 	useEffect(() => {
 		socket?.on('connect', async () => {
-			console.log('conectado');
 			socket?.emit('subscribe', {
 				roomId: params.id,
 				socketId: socket.id,
@@ -20,10 +20,33 @@ export default function Room({ params }: { params: { id: string } }) {
 			await initCamera();
 		});
 
+		socket?.on('newUserStart', (data) => {
+			console.log("New user arrived", data)
+		});
+
     socket?.on('new user', (data)=>{
       console.log('New usser connected ' + data);
+			createPeerConnection(data.socketId);
+			socket.emit('newUserStart', {
+				to: data.socketId,
+				sender: socket.id,
+			})
     })
 	}, [socket]);
+
+
+	const createPeerConnection = (socketId: string) => {
+		const config = {
+			iceServers: [
+				{
+					urls: 'stun:stun.l.google.com:19302',
+				},
+			],
+		}
+		const peer = new RTCPeerConnection(config);
+		peerConnection.current[socketId] = peer;
+	}
+
 
 	const initCamera = async () => {
 		const video = await navigator.mediaDevices.getUserMedia({
