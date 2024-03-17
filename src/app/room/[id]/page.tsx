@@ -9,7 +9,9 @@ import { useContext, useEffect, useRef } from 'react';
 export default function Room({ params }: { params: { id: string } }) {
 	const { socket } = useContext(SocketContext);
   const localStream = useRef<HTMLVideoElement>(null);
-	const peerConnection = useRef<Record<string, RTCPeerConnection>>({});
+	const peerConnections = useRef<Record<string, RTCPeerConnection>>({});
+	
+	console.log("~Room ~peerConnection:", peerConnections.current)
 
 	useEffect(() => {
 		socket?.on('connect', async () => {
@@ -21,11 +23,12 @@ export default function Room({ params }: { params: { id: string } }) {
 		});
 
 		socket?.on('newUserStart', (data) => {
-			console.log("New user arrived", data)
+			console.log("New user arrived", data);
+			createPeerConnection(data.sender);
 		});
 
     socket?.on('new user', (data)=>{
-      console.log('New usser connected ' + data);
+      console.log('New user connected ',  data);
 			createPeerConnection(data.socketId);
 			socket.emit('newUserStart', {
 				to: data.socketId,
@@ -44,7 +47,7 @@ export default function Room({ params }: { params: { id: string } }) {
 			],
 		}
 		const peer = new RTCPeerConnection(config);
-		peerConnection.current[socketId] = peer;
+		peerConnections.current[socketId] = peer;
 	}
 
 
