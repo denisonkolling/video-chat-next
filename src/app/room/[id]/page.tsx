@@ -21,6 +21,8 @@ export default function Room({ params }: { params: { id: string } }) {
 	const localStream = useRef<HTMLVideoElement>(null);
 	const peerConnections = useRef<Record<string, RTCPeerConnection>>({});
 	const [remoteStreams, setRemoteStreams] = useState<MediaStream[]>([]);
+	const [videoMediaStream, setVideoMediaStream] = useState<MediaStream | null>(null);
+
 
 	useEffect(() => {
 		socket?.on('connect', async () => {
@@ -28,7 +30,7 @@ export default function Room({ params }: { params: { id: string } }) {
 				roomId: params.id,
 				socketId: socket.id,
 			});
-			await initCamera();
+			await initLocalCamera();
 		});
 
 		socket?.on('newUserStart', (data) => {
@@ -100,6 +102,17 @@ export default function Room({ params }: { params: { id: string } }) {
 
 		const peerConnection = peerConnections.current[socketId];
 
+		if (videoMediaStream) {
+      videoMediaStream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, videoMediaStream);
+      });
+    } else {
+      const video = await initRemoteCamera();
+      video
+        .getTracks()
+        .forEach((track) => peerConnection.addTrack(track, video));
+    }
+
 		if (createOffer) {
 			const peerConnection = peerConnections.current[socketId];
 			const offer = await peerConnection.createOffer();
@@ -128,7 +141,7 @@ export default function Room({ params }: { params: { id: string } }) {
 		};
 	};
 
-	const initCamera = async () => {
+	const initLocalCamera = async () => {
 		const video = await navigator.mediaDevices.getUserMedia({
 			video: true,
 			audio: {
@@ -138,6 +151,17 @@ export default function Room({ params }: { params: { id: string } }) {
 		});
 		if (localStream.current) localStream.current.srcObject = video;
 	};
+
+	const initRemoteCamera = async () => {
+    const video = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+      },
+    });
+    return video;
+  };
 
 	return (
 		<div className="h-screen">
@@ -158,15 +182,15 @@ export default function Room({ params }: { params: { id: string } }) {
 						</div>
 						{remoteStreams?.map((stream, index) => {
 							return (
-								<div className="bg-gray-950 w-full rounded-md h-full p-1 relative ">
+								<div className="bg-gray-950 w-full rounded-md h-full p-1 relative" key={index}>
 									<video
 										className="h-full w-full"
 										autoPlay
 										playsInline
 										ref={(video) => {
-											if (video && video.srcObject != stream)
+											if (video && video.srcObject !== stream)
 												video.srcObject = stream;
-										}}></video>
+										}} />
 									<span className="absolute bottom-3 mx-4 text-white">
 										Username
 									</span>
