@@ -106,6 +106,7 @@ export default function Room({ params }: { params: { id: string } }) {
       videoMediaStream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, videoMediaStream);
       });
+
     } else {
       const video = await initRemoteCamera();
       video
@@ -141,16 +142,17 @@ export default function Room({ params }: { params: { id: string } }) {
 		};
 	};
 
-	const initLocalCamera = async () => {
-		const video = await navigator.mediaDevices.getUserMedia({
-			video: true,
-			audio: {
-				noiseSuppression: true,
-				echoCancellation: true,
-			},
-		});
-		if (localStream.current) localStream.current.srcObject = video;
-	};
+ const initLocalCamera = async () => {
+    const video = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+      },
+    });
+    setVideoMediaStream(video);
+    if (localStream.current) localStream.current.srcObject = video;
+  };
 
 	const initRemoteCamera = async () => {
     const video = await navigator.mediaDevices.getUserMedia({
@@ -172,9 +174,8 @@ export default function Room({ params }: { params: { id: string } }) {
 						<div className="bg-gray-950 w-full rounded-md h-full p-1 relative ">
 							<video
 								className="h-full w-full mirror-mode"
-								ref={localStream}
 								autoPlay
-								playsInline
+								ref={localStream}
 							/>
 							<span className="absolute bottom-3 mx-4 text-white">
 								Username
@@ -186,11 +187,10 @@ export default function Room({ params }: { params: { id: string } }) {
 									<video
 										className="h-full w-full"
 										autoPlay
-										playsInline
 										ref={(video) => {
-											if (video && video.srcObject !== stream)
-												video.srcObject = stream;
-										}} />
+                      if (video && video.srcObject !== stream)
+                        video.srcObject = stream;
+                    }}/>
 									<span className="absolute bottom-3 mx-4 text-white">
 										Username
 									</span>
@@ -201,7 +201,10 @@ export default function Room({ params }: { params: { id: string } }) {
 				</div>
 				<Chat roomId={params.id} />
 			</div>
-			<Footer />
+			<Footer 
+			videoMediaStream={videoMediaStream!}
+			
+			/>
 		</div>
 	);
 }

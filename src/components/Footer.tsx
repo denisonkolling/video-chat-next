@@ -10,7 +10,9 @@ import Container from './Container';
 import { useState } from 'react';
 import { FaPhoneSlash } from "react-icons/fa";
 
-export default function Footer() {
+export default function Footer({  videoMediaStream,}: {  
+	videoMediaStream: MediaStream;  
+}) {
 	const [isMuted, setIsMuted] = useState(false);
 	const [isCameraOff, setIsCameraOff] = useState(false);
 	const [isScreenSharing, setIsScreenSharing] = useState(false);
@@ -19,6 +21,13 @@ export default function Footer() {
 	const date = new Date();
 	const hours = date.getHours().toString().padStart(2, '0') + ':';
 	const minutes = date.getMinutes().toString().padStart(2, '0');
+
+	const toggleMuted = () => {
+    videoMediaStream?.getAudioTracks().forEach((track) => {
+      track.enabled = !isMuted;
+    });
+    setIsMuted(!isMuted);
+	};
 
 	return (
 		<div className="fixed items-center bottom-0 bg-black py-6 w-full">
@@ -35,13 +44,13 @@ export default function Footer() {
 							<FaMicrophoneSlash
 								size="3rem"
 								className="flex text-white rounded-md p-2 cursor-pointer bg-red-500"
-								onClick={() => setIsMuted(!isMuted)}
+								onClick={() => toggleMuted()}
 							/>
 						) : (
 							<FaMicrophone
 								size="3rem"
 								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer hover:bg-red-500"
-								onClick={() => setIsMuted(!isMuted)}
+								onClick={() => toggleMuted()}
 							/>
 						)}
 
