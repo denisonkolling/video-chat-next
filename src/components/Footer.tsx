@@ -7,16 +7,18 @@ import { FaDisplay } from 'react-icons/fa6';
 import { FaEyeSlash } from 'react-icons/fa6';
 import { FaPhone } from 'react-icons/fa';
 import Container from './Container';
-import { useState, MutableRefObject, } from 'react';
+import { useState, MutableRefObject } from 'react';
 import { FaPhoneSlash } from 'react-icons/fa';
 
 export default function Footer({
 	videoMediaStream,
 	peerConnections,
+	localStream,
 	logout,
 }: {
 	videoMediaStream: MediaStream;
 	peerConnections: MutableRefObject<Record<string, RTCPeerConnection>>;
+	localStream: MutableRefObject<HTMLVideoElement | null>;
 	logout: () => void;
 }) {
 	const [isMuted, setIsMuted] = useState(false);
@@ -35,23 +37,53 @@ export default function Footer({
 	};
 
 	const toggleVideo = () => {
-    setIsCameraOff(!isCameraOff);
-    videoMediaStream?.getVideoTracks().forEach((track) => {
-      track.enabled = isCameraOff;
-    });
+		setIsCameraOff(!isCameraOff);
+		videoMediaStream?.getVideoTracks().forEach((track) => {
+			track.enabled = isCameraOff;
+		});
 
-    Object.values(peerConnections.current).forEach((peerConnection) => {
-      peerConnection.getSenders().forEach((sender) => {
-        if (sender.track?.kind === 'video') {
-          sender.replaceTrack(
-            videoMediaStream
-              ?.getVideoTracks()
-              .find((track) => track.kind === 'video') || null,
-          );
-        }
-      });
-    });
-  };
+		Object.values(peerConnections.current).forEach((peerConnection) => {
+			peerConnection.getSenders().forEach((sender) => {
+				if (sender.track?.kind === 'video') {
+					sender.replaceTrack(
+						videoMediaStream
+							?.getVideoTracks()
+							.find((track) => track.kind === 'video') || null
+					);
+				}
+			});
+		});
+	};
+
+	const toggleScreenSharing = async () => {
+		if (!isScreenSharing) {
+			const videoShareScreen = await navigator.mediaDevices.getDisplayMedia({video: true});
+
+			if (localStream.current) localStream.current.srcObject = videoShareScreen;
+
+			Object.values(peerConnections.current).forEach((peerConnections) => {
+				peerConnections.getSenders().forEach((sender) => {
+					if (sender.track?.kind === 'video') {
+						sender.replaceTrack(videoShareScreen.getVideoTracks()[0]);
+					}
+				});
+			});
+
+			setIsScreenSharing(!isScreenSharing);
+			return;
+		}
+
+		if (localStream.current) localStream.current.srcObject = videoMediaStream;
+
+		Object.values(peerConnections.current).forEach((peerConnections) => {
+			peerConnections.getSenders().forEach((sender) => {
+				if (sender.track?.kind === 'video') {
+					sender.replaceTrack(videoMediaStream?.getVideoTracks()[0]);
+				}
+			});
+		});
+		setIsScreenSharing(!isScreenSharing);
+	};
 
 	return (
 		<div className="fixed items-center bottom-0 bg-black py-6 w-full">
@@ -96,13 +128,13 @@ export default function Footer({
 							<FaEyeSlash
 								size="3rem"
 								className="flex text-white rounded-md p-2 cursor-pointer bg-red-500"
-								onClick={() => setIsScreenSharing(!isScreenSharing)}
+								onClick={() => toggleScreenSharing()}
 							/>
 						) : (
 							<FaDisplay
 								size="3rem"
 								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer hover:bg-red-500"
-								onClick={() => setIsScreenSharing(!isScreenSharing)}
+								onClick={() => toggleScreenSharing()}
 							/>
 						)}
 
