@@ -17,37 +17,51 @@ interface ICandidate {
 	sender: string;
 }
 
+interface IDataStream {
+  id: string;
+  stream: MediaStream;
+  username: string;
+}
+
 export default function Room({ params }: { params: { id: string } }) {
 	const { socket } = useContext(SocketContext);
 	const localStream = useRef<HTMLVideoElement>(null);
 	const peerConnections = useRef<Record<string, RTCPeerConnection>>({});
-	const [remoteStreams, setRemoteStreams] = useState<MediaStream[]>([]);
+	const [remoteStreams, setRemoteStreams] = useState<IDataStream[]>([]);
 	const [videoMediaStream, setVideoMediaStream] = useState<MediaStream | null>(null);
 	const router = useRouter();
 
 
 	useEffect(() => {
+		const username = sessionStorage.getItem('username');
 		socket?.on('connect', async () => {
 			socket?.emit('subscribe', {
 				roomId: params.id,
 				socketId: socket.id,
+				username,
 			});
 			await initLocalCamera();
 		});
 
 		socket?.on('newUserStart', (data) => {
 			console.log('New user arrived', data);
-			createPeerConnection(data.sender, true);
+			createPeerConnection(data.sender, true, data.username);
 		});
 
 		socket?.on('new user', (data) => {
 			console.log('New user awaiting connection', data);
-			createPeerConnection(data.socketId, false);
+			createPeerConnection(data.socketId, false, data.username);
 			socket.emit('newUserStart', {
 				to: data.socketId,
 				sender: socket.id,
+				username,
 			});
 		});
+
+		socket?.on('newUserStart', (data) => {
+      console.log('Usuário conectado na sala', data);
+      createPeerConnection(data.sender, true, data.username);
+    });
 
 		socket?.on('sdp', (data) => {
 			handleAnswer(data);
@@ -89,7 +103,8 @@ export default function Room({ params }: { params: { id: string } }) {
 
 	const createPeerConnection = async (
 		socketId: string,
-		createOffer: boolean
+		createOffer: boolean,
+		username: string,
 	) => {
 		const config = {
 			iceServers: [
@@ -130,8 +145,20 @@ export default function Room({ params }: { params: { id: string } }) {
 
 		peerConnection.ontrack = (event) => {
 			const remoteStream = event.streams[0];
-			setRemoteStreams([...remoteStreams, remoteStream]);
-		};
+
+		     const dataStream: IDataStream = {
+        id: socketId,
+        stream: remoteStream,
+        username,
+      };
+
+      setRemoteStreams((prevState: IDataStream[]) => {
+        if (!prevState.some((stream) => stream.id === socketId)) {
+          return [...prevState, dataStream];
+        }
+        return prevState;
+      });
+    };
 
 		peer.onicecandidate = (event) => {
 			if (event.candidate) {
@@ -191,7 +218,7 @@ export default function Room({ params }: { params: { id: string } }) {
 								ref={localStream}
 							/>
 							<span className="absolute bottom-3 mx-4 text-white">
-								Username
+							{sessionStorage.getItem('username')}
 							</span>
 						</div>
 						{remoteStreams?.map((stream, index) => {
@@ -201,11 +228,12 @@ export default function Room({ params }: { params: { id: string } }) {
 										className="h-full w-full"
 										autoPlay
 										ref={(video) => {
-                      if (video && video.srcObject !== stream)
-                        video.srcObject = stream;
-                    }}/>
+                      if (video && video.srcObject !== stream.stream)
+                        video.srcObject = stream.stream;
+                    }}
+                  />
 									<span className="absolute bottom-3 mx-4 text-white">
-										Username
+									<span className="absolute bottom-3">{stream.username}</span>
 									</span>
 								</div>
 							);
