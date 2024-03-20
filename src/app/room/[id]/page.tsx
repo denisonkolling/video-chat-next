@@ -216,6 +216,7 @@ export default function Room({ params }: { params: { id: string } }) {
 			</div>
 			<Footer 
 			videoMediaStream={videoMediaStream!}
+			peerConnections={peerConnections}
 			logout={logout}
 			/>
 		</div>

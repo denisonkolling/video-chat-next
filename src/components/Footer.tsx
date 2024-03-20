@@ -7,14 +7,16 @@ import { FaDisplay } from 'react-icons/fa6';
 import { FaEyeSlash } from 'react-icons/fa6';
 import { FaPhone } from 'react-icons/fa';
 import Container from './Container';
-import { useState } from 'react';
+import { useState, MutableRefObject, } from 'react';
 import { FaPhoneSlash } from 'react-icons/fa';
 
 export default function Footer({
 	videoMediaStream,
+	peerConnections,
 	logout,
 }: {
 	videoMediaStream: MediaStream;
+	peerConnections: MutableRefObject<Record<string, RTCPeerConnection>>;
 	logout: () => void;
 }) {
 	const [isMuted, setIsMuted] = useState(false);
@@ -31,6 +33,25 @@ export default function Footer({
 		});
 		setIsMuted(!isMuted);
 	};
+
+	const toggleVideo = () => {
+    setIsCameraOff(!isCameraOff);
+    videoMediaStream?.getVideoTracks().forEach((track) => {
+      track.enabled = isCameraOff;
+    });
+
+    Object.values(peerConnections.current).forEach((peerConnection) => {
+      peerConnection.getSenders().forEach((sender) => {
+        if (sender.track?.kind === 'video') {
+          sender.replaceTrack(
+            videoMediaStream
+              ?.getVideoTracks()
+              .find((track) => track.kind === 'video') || null,
+          );
+        }
+      });
+    });
+  };
 
 	return (
 		<div className="fixed items-center bottom-0 bg-black py-6 w-full">
@@ -61,13 +82,13 @@ export default function Footer({
 							<FaVideoSlash
 								size="3rem"
 								className="flex text-white rounded-md p-2 cursor-pointer bg-red-500"
-								onClick={() => setIsCameraOff(!isCameraOff)}
+								onClick={() => toggleVideo()}
 							/>
 						) : (
 							<FaVideo
 								size="3rem"
 								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer hover:bg-red-500"
-								onClick={() => setIsCameraOff(!isCameraOff)}
+								onClick={() => toggleVideo()}
 							/>
 						)}
 
