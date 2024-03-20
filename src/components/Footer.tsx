@@ -1,14 +1,8 @@
 'use client';
 import { FaMicrophone } from 'react-icons/fa';
-import { FaMicrophoneSlash } from 'react-icons/fa6';
-import { FaVideo } from 'react-icons/fa6';
-import { FaVideoSlash } from 'react-icons/fa';
-import { FaDisplay } from 'react-icons/fa6';
-import { FaEyeSlash } from 'react-icons/fa6';
-import { FaPhone } from 'react-icons/fa';
+import { FaMicrophoneSlash, FaVideo, FaVideoSlash, FaDisplay, FaEyeSlash, FaPhone, } from 'react-icons/fa6';
 import Container from './Container';
 import { useState, MutableRefObject } from 'react';
-import { FaPhoneSlash } from 'react-icons/fa';
 
 export default function Footer({
 	videoMediaStream,
