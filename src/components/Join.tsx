@@ -24,10 +24,10 @@ export default function JoinRoom() {
   return (
     <>
       <form onSubmit={(e) => handleJoinRoom(e)} className="space-y-8">
-        <Input placeholder="Seu nome" type="text" ref={name} />
-        <Input placeholder="ID da reunião" type="text" ref={id} />
+        <Input placeholder="Your name" type="text" ref={name} />
+        <Input placeholder="Room ID" type="text" ref={id} />
 
-        <Button title="Entrar" type="submit" />
+        <Button title="Enter" type="submit" />
       </form>
     </>
   );
