@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { SocketContext } from '@/context/SocketContext';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface IAnswer {
 	sender: string;
@@ -22,6 +23,7 @@ export default function Room({ params }: { params: { id: string } }) {
 	const peerConnections = useRef<Record<string, RTCPeerConnection>>({});
 	const [remoteStreams, setRemoteStreams] = useState<MediaStream[]>([]);
 	const [videoMediaStream, setVideoMediaStream] = useState<MediaStream | null>(null);
+	const router = useRouter();
 
 
 	useEffect(() => {
@@ -165,6 +167,17 @@ export default function Room({ params }: { params: { id: string } }) {
     return video;
   };
 
+	const logout = () => {
+    videoMediaStream?.getTracks().forEach((track) => {
+      track.stop();
+    });
+    Object.values(peerConnections.current).forEach((peerConnection) => {
+      peerConnection.close();
+    });
+    socket?.disconnect();
+    router.push('/');
+  };
+
 	return (
 		<div className="h-screen">
 			<Header />
@@ -203,7 +216,7 @@ export default function Room({ params }: { params: { id: string } }) {
 			</div>
 			<Footer 
 			videoMediaStream={videoMediaStream!}
-			
+			logout={logout}
 			/>
 		</div>
 	);

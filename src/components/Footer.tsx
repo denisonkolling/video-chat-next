@@ -5,28 +5,31 @@ import { FaVideo } from 'react-icons/fa6';
 import { FaVideoSlash } from 'react-icons/fa';
 import { FaDisplay } from 'react-icons/fa6';
 import { FaEyeSlash } from 'react-icons/fa6';
-import { FaPhone } from "react-icons/fa";
+import { FaPhone } from 'react-icons/fa';
 import Container from './Container';
 import { useState } from 'react';
-import { FaPhoneSlash } from "react-icons/fa";
+import { FaPhoneSlash } from 'react-icons/fa';
 
-export default function Footer({  videoMediaStream,}: {  
-	videoMediaStream: MediaStream;  
+export default function Footer({
+	videoMediaStream,
+	logout,
+}: {
+	videoMediaStream: MediaStream;
+	logout: () => void;
 }) {
 	const [isMuted, setIsMuted] = useState(false);
 	const [isCameraOff, setIsCameraOff] = useState(false);
 	const [isScreenSharing, setIsScreenSharing] = useState(false);
-	const [isCallEnded, setIsCallEnded] = useState(false);
 
 	const date = new Date();
 	const hours = date.getHours().toString().padStart(2, '0') + ':';
 	const minutes = date.getMinutes().toString().padStart(2, '0');
 
 	const toggleMuted = () => {
-    videoMediaStream?.getAudioTracks().forEach((track) => {
-      track.enabled = !isMuted;
-    });
-    setIsMuted(!isMuted);
+		videoMediaStream?.getAudioTracks().forEach((track) => {
+			track.enabled = !isMuted;
+		});
+		setIsMuted(!isMuted);
 	};
 
 	return (
@@ -82,19 +85,10 @@ export default function Footer({  videoMediaStream,}: {
 							/>
 						)}
 
-						{isCallEnded ? (
-							<FaPhoneSlash
-								size="3rem"
-								className="flex text-whiterounded-md p-2 cursor-pointer bg-red-500"
-								onClick={() => setIsCallEnded(!isCallEnded)}
-							/>
-						) : (
-							<FaPhone
-								size="3rem"
-								className="flex text-white bg-gray-950 rounded-md p-2 cursor-pointer hover:bg-red-500"
-                onClick={() => setIsCallEnded(!isCallEnded)}
-							/>
-						)}
+						<FaPhone
+							onClick={logout}
+							className="h-12 w-16 text-white hover:bg-red-500 p-2 cursor-pointer bg-primary rounded-md"
+						/>
 					</div>
 				</div>
 			</Container>
