@@ -58,11 +58,6 @@ export default function Room({ params }: { params: { id: string } }) {
 			});
 		});
 
-		socket?.on('newUserStart', (data) => {
-      console.log('Usuário conectado na sala', data);
-      createPeerConnection(data.sender, true, data.username);
-    });
-
 		socket?.on('sdp', (data) => {
 			handleAnswer(data);
 		});
